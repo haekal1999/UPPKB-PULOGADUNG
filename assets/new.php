@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Indianaweb.blogspot</title>
+ <style type="text/css">
+  .timer{
+   background: #27ae60;
+   color: #f6f6f6;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   height: 100vh;
+  }
+ 
+  .timer .stopwatch {
+   font-size: 14em;
+   font-family: monospace;
+  }
+  .timer button {
+   cursor:pointer;
+   border-radius:5px;
+   padding: 5px 10px;
+  }
+ </style>
+</head>
+<body>
+    <div class="timer">
+ <div class="controls">
+  <button onclick="start()">Start</button>
+  <button onclick="pause()">Pause</button>
+  <button onclick="stop()">Stop</button>
+  <button onclick="restart()">Restart</button>
+  <button onclick="lap()">Lap</button>
+  <button onclick="resetLaps()">Reset Laps</button>
+ </div>
+ <div class="stopwatch">00:00:00</div>
+ <ul class="laps"></ul>
+ 
+ <script type="text/javascript">
+ 
+  var ms = 0, s = 0, m = 0;
+  var timer;
+ 
+  var stopwatchEl = document.querySelector('.stopwatch');
+  var lapsContainer = document.querySelector('.laps');
+ 
+  function start() {
+   if(!timer) {
+    timer = setInterval(run, 10);
+   }
+  }
+ 
+  function run() {
+   stopwatchEl.textContent = getTimer();
+   ms++;
+   if(ms == 100) {
+    ms = 0;
+    s++;
+   }
+   if(s == 60) {
+    s = 0;
+    m++;
+   }
+  }
+ 
+  function pause() {
+   stopTimer();
+  }
+ 
+  function stop() {
+   stopTimer();
+   ms = 0;
+   s = 0;
+   m = 0;
+   stopwatchEl.textContent = getTimer();
+  }
+ 
+  function stopTimer() {
+   clearInterval(timer);
+   timer = false;
+  }
+ 
+  function getTimer() {
+   return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s) + ":" + (ms < 10 ? "0" + ms : ms);
+  }
+ 
+  function restart() {
+   stop();
+   start();
+  }
+ 
+  function lap() {
+   if(timer) {
+    var li = document.createElement('li');
+    li.innerText = getTimer();
+    lapsContainer.appendChild(li);
+   }
+  }
+ 
+  function resetLaps() {
+   lapsContainer.innerHTML = '';
+  }
+ 
+ </script>
+ </div>
+</body>
+</html>
